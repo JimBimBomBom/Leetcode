@@ -16,7 +16,7 @@
 
 void unique(vector<int>& v) {
     // sort(v);
-    v.sort(v.begin(), v.end());
+    sort(v.begin(), v.end());
     int unique_insert_index = 1;
     int search_index = 1;
     while (search_index < v.size()) {
@@ -31,10 +31,8 @@ void unique(vector<int>& v) {
 }
 
 vector<int> intersect(vector<int>& v1, vector<int>& v2) {
-    // unique(v1);
-    // unique(v2);
-    v1.unique();
-    v2.unique();
+    unique(v1);
+    unique(v2);
     vector<int> result;
     int i = 0;
     int j = 0;
