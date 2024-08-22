@@ -1,17 +1,20 @@
 class Solution:
     def stoneGameII(self, piles: List[int]) -> int:
-        result = 0
-        size = len(piles)
+        n = len(piles)
         
-        dp = [(0, 1, 0, True)] # actor == True means Alice
-        while dp:
-            index, m, intermediateResult, actor = dp.pop()
-
-            for i in range(1, m * 2 + 1):
-                if index + i > size:
-                    result = max(result, intermediateResult + sum(piles[index:]))
+        dp = [[0] * (n + 1) for _ in range(n)]
+        suffix_sum = [0] * n
+        suffix_sum[-1] = piles[-1]
+        
+        for i in range(n - 2, -1, -1):
+            suffix_sum[i] = suffix_sum[i + 1] + piles[i]
+        
+        for i in range(n - 1, -1, -1):
+            for m in range(1, n + 1):
+                if i + 2 * m >= n:
+                    dp[i][m] = suffix_sum[i]
                 else:
-                    dp.append((index + i, max(m, i), intermediateResult + sum(piles[index:max(index + i, size + 1)]), not actor))
+                    for x in range(1, 2 * m + 1):
+                        dp[i][m] = max(dp[i][m], suffix_sum[i] - dp[i + x][max(m, x)])
         
-        return result
-            
+        return dp[0][1]
